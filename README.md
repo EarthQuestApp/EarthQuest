@@ -11,3 +11,8 @@ Steps to clone this repository in your local computer:
 8. npx expo --version (when you run this command if the version is coming as output let me know!!)
 9. npx expo start or
 10. npm start or expo start
+Extra Packages to be installed
+11. npm install @react-navigation/native react-native-screens react-native-safe-area-context react-native-navigation react-native-gesture-handler react-native-reanimated react-native-device-info react-native-vector-icons react-native-get-random-values
+12. npm install @react-navigation/native-stack
+13. npm install react-native-gesture-handler@~2.20.2 react-native-reanimated@~3.16.1 react-native-safe-area-context@4.12.0 react-native-screens@~4.4.0
+
