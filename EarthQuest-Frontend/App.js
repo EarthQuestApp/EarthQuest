@@ -2,18 +2,27 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import 'react-native-gesture-handler';
 
-import HomeScreen from './screens/HomeScreen.js';
+// Import EcoLoginSignup and HomeScreen Pages
+import EcoLoginSignup from './screens/EcoLoginSignup';
+import HomeScreen from './screens/HomeScreen';
 
-import GameScreen from './screens/GameScreen.js';
-
+// Stack Navigator
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Game" component={GameScreen} />
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen 
+          name="Login" 
+          component={EcoLoginSignup} 
+          options={{ headerShown: false }} 
+        />
+        <Stack.Screen 
+          name="Home" 
+          component={HomeScreen} 
+          options={{ headerShown: false }} 
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
