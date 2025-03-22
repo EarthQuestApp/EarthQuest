@@ -1,33 +1,91 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  StatusBar,
+  Keyboard,
+  Alert,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 const EcoLoginSignup = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const toggleForm = () => {
     setIsLogin(!isLogin);
+    setEmail('');
+    setPassword('');
+    setConfirmPassword('');
+  };
+
+  const validateInputs = () => {
+    if (!email.includes('@')) {
+      Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      return false;
+    }
+    if (password.length < 6) {
+      Alert.alert('Weak Password', 'Password must be at least 6 characters.');
+      return false;
+    }
+    if (!isLogin && password !== confirmPassword) {
+      Alert.alert('Password Mismatch', 'Passwords do not match.');
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = () => {
-    // Perform login or signup logic here
-    // On success, navigate to Home screen
-    navigation.navigate('Home');
+    Keyboard.dismiss(); // Hide keyboard on submit
+    if (!validateInputs()) return;
+
+    // Simulate authentication (Replace with real API logic)
+    setTimeout(() => {
+      Alert.alert('Success', isLogin ? 'Logged in successfully!' : 'Account created successfully!');
+      navigation.navigate('Home');
+    }, 1000);
   };
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} onTouchStart={Keyboard.dismiss}>
       <View style={styles.formContainer}>
         <Ionicons name="leaf-outline" size={80} color="#2e7d32" style={styles.icon} />
         <Text style={styles.headerText}>
           {isLogin ? 'Welcome Back, Earth Warrior!' : 'Join the Green Movement'}
         </Text>
 
-        <TextInput placeholder="Email" placeholderTextColor="#dcdcdc" style={styles.input} />
-        <TextInput placeholder="Password" placeholderTextColor="#dcdcdc" secureTextEntry style={styles.input} />
+        <TextInput
+          placeholder="Email"
+          placeholderTextColor="#dcdcdc"
+          style={styles.input}
+          value={email}
+          onChangeText={setEmail}
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+        <TextInput
+          placeholder="Password"
+          placeholderTextColor="#dcdcdc"
+          secureTextEntry
+          style={styles.input}
+          value={password}
+          onChangeText={setPassword}
+        />
 
         {!isLogin && (
-          <TextInput placeholder="Confirm Password" placeholderTextColor="#dcdcdc" secureTextEntry style={styles.input} />
+          <TextInput
+            placeholder="Confirm Password"
+            placeholderTextColor="#dcdcdc"
+            secureTextEntry
+            style={styles.input}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
         )}
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -49,16 +107,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#e6f7e6', // Soft light green background
-    position: 'relative', // Ensure absolute positioning works correctly
-    paddingTop: StatusBar.currentHeight, // Adjust for status bar height
+    backgroundColor: '#e6f7e6',
+    position: 'relative',
+    paddingTop: StatusBar.currentHeight,
   },
   formContainer: {
     alignItems: 'center',
     marginBottom: 40,
-    zIndex: 1, // Make sure form is above floating leaf
-    width: '90%', // Set width to 90% of the screen
-    maxWidth: 400, // Ensure the form does not stretch beyond 400px width
+    zIndex: 1,
+    width: '90%',
+    maxWidth: 400,
   },
   icon: {
     marginBottom: 20,
@@ -66,28 +124,28 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#2e7d32', // Green color for header
+    color: '#2e7d32',
     marginTop: 10,
     textAlign: 'center',
-    fontFamily: 'Roboto', // Use a clean, modern font
+    fontFamily: 'Roboto',
   },
   input: {
     height: 50,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Light semi-transparent background for inputs
-    marginBottom: 15, // Reduced margin for closer spacing
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    marginBottom: 15,
     paddingHorizontal: 15,
     borderRadius: 10,
-    color: '#333', // Dark text for better contrast
+    color: '#333',
     fontSize: 16,
-    width: '100%', // Make inputs full width of the container
+    width: '100%',
   },
   button: {
     backgroundColor: '#2e7d32',
     paddingVertical: 15,
     alignItems: 'center',
     borderRadius: 10,
-    width: '100%', // Make button full width of the container
-    marginBottom: 20, // Add spacing below button
+    width: '100%',
+    marginBottom: 20,
   },
   buttonText: {
     color: '#fff',
@@ -95,10 +153,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   toggleText: {
-    color: '#2e7d32', // Green text for toggling
-    marginTop: 10, // Reduced margin for better spacing
+    color: '#2e7d32',
+    marginTop: 10,
     fontSize: 16,
-    fontFamily: 'Roboto', // Consistent font family
+    fontFamily: 'Roboto',
   },
 });
 
