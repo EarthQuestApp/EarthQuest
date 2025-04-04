@@ -19,4 +19,14 @@ Extra Packages to be installed
 15. npm install react-native-reanimated react-native-gesture-handler
 16. npm install expo-file-system expo-document-picker
 17. npm install react-native-pdf
-
+18. npx expo install firebase
+19. npm install firebase
+20. npx expo install react-native-webview
+21. npx expo install expo-sharing
+22. npm install @react-native-async-storage/async-storage
+23. npx expo install expo-auth-session expo-random
+24. npx expo install expo-auth-session expo-facebook
+25. npm install @react-native-async-storage/async-storage
+26. npx expo install expo-linear-gradient
+27. npm install react-native-reanimated react-native-linear-gradient framer-motion
+28. npm install react-native-animatable
