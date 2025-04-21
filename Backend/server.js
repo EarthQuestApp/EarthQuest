@@ -2,7 +2,7 @@ import express from "express";
 import { MongoClient } from "mongodb";
 import jwt from "jsonwebtoken";
 import cors from "cors";
-import bodyParser, { json } from "body-parser";
+import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
