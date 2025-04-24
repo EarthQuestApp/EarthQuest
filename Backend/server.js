@@ -20,8 +20,8 @@ const port = 5001;
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
-    methods: "GET, POST",
+    origin: "http://localhost:8081",
+    methods: "GET, POST, DELETE, PUT",
     credentials: true,
   })
 );
@@ -50,14 +50,10 @@ app.post("/signup", async (req, res) => {
     const collection = db.collection("UserSignupInformation");
     const existingUser = await collection.findOne({ username });
     if (existingUser) {
-      return res.status(400).json({ message: "Username Already Exists" });
+      return res.status(400).json({ message: "UserName Already Exists" });
     }
-
     const hashedPassword = await bcrypt.hash(password, 10);
-
     const newUser = {
-      firstName,
-      lastName,
       username,
       password: hashedPassword,
     };
@@ -73,20 +69,18 @@ app.post("/signup", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { username, password } = req.body;
-
   console.log(`Recieved login attempt: ${username}`);
-
   try {
     const db = client.db("UserInformation");
     const collection = db.collection("UserSignupInformation");
     const existingUser = await collection.findOne({ username });
+    console.log("existingUser:", existingUser);
     if (!existingUser) {
       return res.status(400).json({
         message:
-          "there is no account correlated to this username, Try Again Or Signup.",
+          "There is no account correlated to this username. Try again or Signup.",
       });
     }
-
     const isPasswordValid = await bcrypt.compare(
       password,
       existingUser.password
@@ -95,7 +89,7 @@ app.post("/login", async (req, res) => {
     if (!isPasswordValid) {
       return res
         .status(401)
-        .json({ message: "Invalid password, PLease Try Again." });
+        .json({ message: "Invalid Password. Please Try Again." });
     }
 
     const token = jwt.sign(
@@ -109,4 +103,7 @@ app.post("/login", async (req, res) => {
     console.error(err);
     res.status(500).json({ message: "Internal server error" });
   }
+});
+app.listen(port, () => {
+  console.log(`Server Running ON http://localhost:${port}`);
 });

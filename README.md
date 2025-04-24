@@ -30,3 +30,6 @@ Extra Packages to be installed
 26. npx expo install expo-linear-gradient
 27. npm install react-native-reanimated react-native-linear-gradient framer-motion
 28. npm install react-native-animatable
+29. npm install react-native-qrcode-svg
+30. npx expo install expo-network
+31. npx expo install expo-media-library

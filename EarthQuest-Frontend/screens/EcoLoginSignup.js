@@ -18,6 +18,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import axios from 'axios';
 
 const EcoLoginSignup = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -46,14 +47,17 @@ const EcoLoginSignup = ({ navigation }) => {
   const validateInputs = () => {
     if (!email.includes("@")) {
       Alert.alert("Invalid Email", "Please enter a valid email address.");
+      alert("Invalid Email", "Please enter a valid email address.");
       return false;
     }
     if (password.length < 6) {
       Alert.alert("Weak Password", "Password must be at least 6 characters.");
+      alert("Weak Password", "Password must be at least 6 characters.");
       return false;
     }
     if (!isLogin && password !== confirmPassword) {
       Alert.alert("Password Mismatch", "Passwords do not match.");
+      alert("Password Mismatch", "Passwords do not match.");
       return false;
     }
     return true;
@@ -62,20 +66,38 @@ const EcoLoginSignup = ({ navigation }) => {
   const handleSubmit = async () => {
     Keyboard.dismiss();
     if (!validateInputs()) return;
-
     setLoading(true);
-    try {
-      if (isLogin) {
-        await signInWithEmailAndPassword(auth, email, password);
-        Alert.alert("Success", "Logged in successfully!");
-      } else {
-        await createUserWithEmailAndPassword(auth, email, password);
-        Alert.alert("Success", "Account created successfully!");
+    try{
+      if(isLogin){
+        const res = await axios.post("http://localhost:5001/login" , {
+          username: email,
+          password: password,
+        });
+        Alert.alert("Success", "Logged In successfully!");
+        navigation.navigate("Home");
       }
-      navigation.navigate("Home");
-    } catch (error) {
-      Alert.alert("Authentication Error", error.message);
-    } finally {
+      else{
+        const res = await axios.post("http://localhost:5001/signup", {
+          username: email,
+          password: password,
+        });
+        navigation.navigate("Home");
+      }
+    }
+    catch (error) {
+      let message = "Something went wrong. Please try again.";
+      if (error?.response) {
+        if (error.response.status === 400) {
+          message = "There was a login problem. Please check your credentials.";
+          alert(message);
+          console.log(message);
+        } else if (error.response.data?.message) {
+          message = error.response.data.message;
+        }
+      }
+      Alert.alert("Authentication Error", message);
+    }
+    finally{
       setLoading(false);
     }
   };
